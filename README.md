@@ -9,6 +9,9 @@ Materialien zu Übung Programmierung, SoSe 2019, TU Dresden, Mittwoch 4. DS, APB
 * org-Dateien lassen sich in Emacs öffnen und auf github online betrachten
 * die dazugehörige html-Datei hat jeweils den gleichen Inhalt und kann in einem Browser betrachtet werden
 
+### Direktlinks zu den gerenderten html-Dateien
+* [Übung 4](http://htmlpreview.github.io/?https://github.com/denki/prog-w2019/blob/master/tut04/sol04.html)
+
 ## Benutzung (pl-Dateien)
 * eine Datei mit ``swipl`` laden: ``swipl tut06/sol06-2.pl``
 * ein Goal eingeben: z.B. ``?- ancestor(X, berti).``
