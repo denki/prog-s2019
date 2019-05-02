@@ -1,0 +1,125 @@
+#+title: Lösungen zum 4. Übungsblatt
+#+date: 2019-05-02
+#+email: tobias.denkinger@tu-dresden.de
+#+options: tol:nil
+
+* Lösungen zu Aufgabe 1 (AGS 12.1.16a, 12.1.48b,c, 12.1.56)
+#+begin_src haskell
+data Tree a = Branch a (Tree a) (Tree a) | Leaf a
+#+end_src
+
+** Teilaufgabe a
+#+begin_src haskell
+tree :: Tree Int
+tree = Branch 5 (Branch 4 (Leaf 1)
+                          (Leaf 2)
+                )
+                (Branch 3 (Branch 5 (Leaf 3)
+                                    (Leaf 4)
+                          )
+                          (Leaf 5)
+                )
+#+end_src
+
+** Teilaufgabe b
+#+begin_src haskell
+depth :: Tree a -> Int
+depth (Branch _ s t) = 1 + depth s `min` depth t
+depth (Leaf _)       = 1
+#+end_src
+
+** Teilaufgabe c
+#+begin_src haskell
+paths :: Tree a -> Tree [a]
+paths = paths' []
+
+paths' :: [a] -> Tree a -> Tree [a]
+paths' prefix (Branch a s t)
+  = Branch pr' (paths' pr' s) (paths' pr' t) where pr' = prefix ++ [a]
+paths' prefix (Leaf a)
+  = Leaf $ prefix ++ [a] 
+#+end_src
+
+** Teilaufgabe d
+#+begin_src haskell
+tmap :: (a -> b) -> Tree a -> Tree b
+tmap f (Branch a s t) = Branch (f a) (tmap f s) (tmap f t)
+tmap f (Leaf a)       = Leaf $ f a
+#+end_src
+
+* Lösungen zu Aufgabe 2 (AGS 12.1.51a,b)
+** Teilaufgabe a
+#+begin_src haskell
+unzip :: [(a,b)] -> ([a], [b])
+unzip [] = ([], [])
+unzip ((a, b) : xs)
+  = let (as, bs) = unzip xs
+    in  (a : as, b : bs) 
+#+end_src
+
+ * Typeclassopedia
+
+** Teilaufgabe b
+#+begin_src haskell
+map :: (a -> b) -> [a] -> [b]           -- 1
+map _ []     = []                       -- 2
+map f (x:xs) = f x : map f xs           -- 3
+
+uncurry :: (a -> b -> c) -> (a, b) -> c -- 5
+uncurry f (x, y) = f x y                -- 6
+
+map (uncurry (+)) [(1,2), (3,4)]
+=³ uncurry (+) (1,2) : map (uncurry (+)) [(3,4)]
+=⁶ (+) 1 2 : map (uncurry (+)) [(3,4)]
+=  3 : map (uncurry (+)) [(3,4)]
+=³ 3 : uncurry (+) (3,4) : map (uncurry (+)) []
+=⁶ 3 : (+) 3 4 : map (uncurry (+)) []
+=  3 : 7 : map (uncurry (+)) []
+=² 3 : 7 : []
+≡  [3,7]
+#+end_src
+
+* Lösungen zu Aufgabe 3 (AGS 12.2.12)
+** Teilaufgabe a
+#+begin_src elisp
+⎧ ⎛ σ(σ(x₁   , α), σ(γ(x₃), x₃)) ⎞ ⎫
+⎨ ⎝ σ(σ(γ(x₂), α), σ(x₂   , x₃)) ⎠ ⎬
+⎩                                  ⎭
+
+Dek ⎧ ⎛ σ(x₁   , α) ⎞  ⎛ σ(γ(x₃), x₃) ⎞ ⎫
+⇒   ⎨ ⎝ σ(γ(x₂), α) ⎠, ⎝ σ(x₂   , x₃) ⎠ ⎬
+    ⎩ ===============  ================ ⎭
+
+Dek ⎧ ⎛x₁   ⎞  ⎛α⎞  ⎛γ(x₃)⎞  ⎛x₃⎞ ⎫
+⇒   ⎨ ⎝γ(x₂)⎠, ⎝α⎠, ⎝x₂   ⎠, ⎝x₃⎠ ⎬
+    ⎩          ===                ⎭ 
+
+Dek ⎧ ⎛x₁   ⎞  ⎛γ(x₃)⎞  ⎛x₃⎞ ⎫
+⇒   ⎨ ⎝γ(x₂)⎠, ⎝x₂   ⎠, ⎝x₃⎠ ⎬
+    ⎩                   ==== ⎭ 
+
+El  ⎧ ⎛x₁   ⎞  ⎛γ(x₃)⎞ ⎫
+⇒   ⎨ ⎝γ(x₂)⎠, ⎝x₂   ⎠ ⎬
+    ⎩          ======= ⎭ 
+
+Vert ⎧ ⎛x₁   ⎞  ⎛x₂   ⎞ ⎫
+⇒    ⎨ ⎝γ(x₂)⎠, ⎝γ(x₃)⎠ ⎬
+     ⎩          ======= ⎭ 
+
+Sub ⎧ ⎛x₁      ⎞  ⎛x₂   ⎞ ⎫
+⇒   ⎨ ⎝γ(γ(x₃))⎠, ⎝γ(x₃)⎠ ⎬ ⊆ φ
+    ⎩                     ⎭ 
+#+end_src
+
+ * allgemeinster Unifikator:
+   * φ: x₁ ↦ γ(γ(x₃)), x₂ ↦ γ(x₃), x₃ ↦ x₃ 
+
+** Teilaufgabe b
+ * weitere Unifikatoren
+   * φ₁: x₁ ↦ γ(γ(α)), x₂ ↦ γ(α), x₃ ↦ α 
+   * φ₂: x₁ ↦ γ(γ(γ(α))), x₂ ↦ γ(γ(α)), x₃ ↦ γ(α) 
+   * φ₃: x₁ ↦ γ(γ(γ(x₃))), x₂ ↦ γ(γ(x₃)), x₃ ↦ γ(x₃) 
+
+** Teilaufgabe
+ * t₁ = σ(x₁, x₂   )
+ * t₂ = σ(x₂, γ(x₂))
