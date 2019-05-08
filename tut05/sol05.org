@@ -1,0 +1,139 @@
+#+title: Lösungen zum 5. Übungsblatt
+#+date: 2019-05-08
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösungen zu Aufgabe 1 (AGS 12.2.14)
+** Teilaufgabe a
+  * Unifikation:
+#+begin_src elisp
+⎧ ⎛ δ(α, σ(x₁, α ), σ(x₂, x₃   )) ⎞ ⎫
+⎨ ⎝ δ(α, σ(x₁, x₂), σ(x₂, γ(x₂))) ⎠ ⎬
+⎩                                   ⎭
+
+Dek ⎧ ⎛α⎞, ⎛σ(x₁, α )⎞, ⎛σ(x₂, x₃   )⎞ ⎫
+==> ⎨ ⎝α⎠  ⎝σ(x₁, x₂)⎠  ⎝σ(x₂, γ(x₂))⎠ ⎬
+    ⎩                                  ⎭
+
+Dek ⎧ ⎛x₁⎞, ⎛α ⎞, ⎛x₂⎞, ⎛x₃   ⎞ ⎫
+==> ⎨ ⎝x₁⎠  ⎝x₂⎠  ⎝x₂⎠  ⎝γ(x₂)⎠ ⎬
+    ⎩                           ⎭
+
+El  ⎧ ⎛α ⎞, ⎛x₃   ⎞ ⎫
+==> ⎨ ⎝x₂⎠  ⎝γ(x₂)⎠ ⎬
+    ⎩               ⎭
+
+Ver ⎧ ⎛x₂⎞, ⎛x₃   ⎞ ⎫
+==> ⎨ ⎝α ⎠  ⎝γ(x₂)⎠ ⎬
+    ⎩               ⎭
+
+Sub ⎧ ⎛x₂⎞, ⎛x₃  ⎞ ⎫
+==> ⎨ ⎝α ⎠  ⎝γ(α)⎠ ⎬
+    ⎩              ⎭
+#+end_src
+
+  * allgemeinster Unifikator: φ: x₁ ↦ x₁, x₂ ↦ α, x₃ ↦ γ(α)
+
+** Teilaufgabe b
+  * t₁ = (a  , [a     ])
+  * t₂ = (Int, [Double])
+  * t₃ = (b  , c       )
+
+  * U(t₁, t₂): nicht unifizierbar
+  * U(t₁, t₃): unifizierbar, φ: a ↦ a, b ↦ a, c ↦ [a]
+  * U(t₂, t₃): unifizierbar, φ: b ↦ Int, c ↦ [Double]
+
+* Lösungen zu Aufgabe 2 (AGS 12.2.13)
+** Teilaufgabe a
+  * Unifikation
+#+begin_src elisp
+⎧ ⎛ σ(γ(x₂), σ(γ(α), x₃      )) ⎞ ⎫
+⎨ ⎝ σ(x₁   , σ(γ(α), σ(α, x₁))) ⎠ ⎬
+⎩                                 ⎭
+
+Dek ⎧ ⎛γ(x₂)⎞, ⎛σ(γ(α), x₃      )⎞ ⎫
+==> ⎨ ⎝x₁   ⎠  ⎝σ(γ(α), σ(α, x₁))⎠ ⎬
+    ⎩                              ⎭
+
+Dek ⎧ ⎛γ(x₂)⎞, ⎛γ(α)⎞, ⎛x₃      ⎞ ⎫
+==> ⎨ ⎝x₁   ⎠  ⎝γ(α)⎠  ⎝σ(α, x₁)⎠ ⎬
+    ⎩                             ⎭
+
+Dek ⎧ ⎛γ(x₂)⎞, ⎛α⎞, ⎛x₃      ⎞ ⎫
+==> ⎨ ⎝x₁   ⎠  ⎝α⎠  ⎝σ(α, x₁)⎠ ⎬
+    ⎩                          ⎭
+
+Dek ⎧ ⎛γ(x₂)⎞, ⎛x₃      ⎞ ⎫
+==> ⎨ ⎝x₁   ⎠  ⎝σ(α, x₁)⎠ ⎬
+    ⎩                     ⎭
+
+Ver ⎧ ⎛x₁   ⎞, ⎛x₃      ⎞ ⎫
+==> ⎨ ⎝γ(x₂)⎠  ⎝σ(α, x₁)⎠ ⎬
+    ⎩                     ⎭
+
+Sub ⎧ ⎛x₁   ⎞, ⎛x₃         ⎞ ⎫
+==> ⎨ ⎝γ(x₂)⎠  ⎝σ(α, γ(x₂))⎠ ⎬
+    ⎩                        ⎭
+#+end_src
+
+  *allgemeinster Unifikator: φ: x₁ ↦ γ(x₂), x₂ ↦ x₂, x₃ ↦ σ(α, γ(x₂))
+
+** Teilaufgabe b
+   * φ₁ = φ ; {(x₂, α)}: x₁ ↦ γ(α), x₂ ↦ α, x₃ ↦ σ(α, γ(α))
+   * φ₂ = φ ; {(x₂, γ(x₂))}: x₁ ↦ γ(γ(x₂)), x₂ ↦ γ(x₂), x₃ ↦ σ(α, γ(γ(x₂)))
+
+* Lösung zu Aufgabe 3 (AGS 12.3.20)
+*zu zeigen:*  Für jedes xs :: [Int] gilt
+#+begin_src haskell
+sum (foo xs) = 2 * sum xs - length xs
+#+end_src
+
+*Induktionsanfang:*
+Sei xs = [].
+Dann gilt:
+#+begin_src haskell
+-- linke Seite
+sum (foo []) =² sum [] =⁶ 0
+
+-- rechte Seite
+2 * sum [] - length [] =¹⁰ 2 * sum [] - 0 =⁶ 2 * 0 - 0 = 0   
+#+end_src
+
+*Induktionsschritt:*
+Sei xss :: [Int], sodass
+  sum (foo xss) = 2 * sum xss - length xss    (IH)
+gilt.
+Sei weiterhin x :: Int.
+Dann gilt:
+#+begin_src haskell
+sum (foo (x:xss))
+= sum (x : x : (-1) : foo xss)                -- 3
+= x + x + (-1) + sum (foo xss)                -- 7³
+= x + x + (-1) + 2 * sum xss - length xss     -- IH
+= 2 * (x + sum xss) - (1 + length xss)
+= 2 * sum (x:xss) - (1 + length xss)          -- 7
+= 2 * sum (x:xss) - length (x:xss)            -- 11  q.e.d.
+#+end_src
+
+* Lösung zu Aufgabe Z2 (AGS 12.3.21)
+*IA:*
+Sei xs = [].
+Dann gilt:
+#+begin_src haskell
+length (dup []) =² length [] =¹⁰ 0 = 1 - 1 =⁶ pow [] - 1
+#+end_src
+
+*IS:*
+Sei xss :: [Int], sodass gilt:
+  length (dup xss) = pow xss - 1            (IH)
+Sei weiterhin x :: Int.
+Dann gilt:
+#+begin_src haskell
+length (dup (x:xss))
+= length (x : (dup xss ++ dup xss))           -- 3
+= 1 + length (dup xss ++ dup xss)             -- 11
+= 1 + length (dup xss) + length (dup xss)     -- B
+= 1 + pow xss - 1 + pow xss - 1               -- IH
+= 2 * pow xss - 1
+= pow (x:xss) - 1                             -- 7  q.e.d.
+#+end_src
