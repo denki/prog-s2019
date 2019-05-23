@@ -1,0 +1,96 @@
+#+title: Lösungen zum 7. Übungsblatt
+#+date: 2019-05-23
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösung zu Aufgabe 1 (AGS 12.4.29)
+ * A = (λxyz.y)
+   -- Atsu = (λxyz.y)tsu ⇒ᵦ (λyz.y)su ⇒ᵦ (λz.s)u ⇒ᵦ s
+ * B = (λxy.yx)
+ * C = (λx.xx)
+   -- CC = (λx.xx)C ⇒ᵦ CC
+ * D = CC
+   -- D = CC = (λx.xx)C ⇒ᵦ CC = D
+ * E = (λxy.xyx)
+   -- EEt = (λxy.xyx)Et ⇒ᵦ (λy.EyE)t ⇒ᵦ EtE
+
+* Lösung zu Aufgabe 2 (AGS 12.4.36)
+** Teilaufgabe a
+#+begin_src elisp
+⟨pow⟩⟨2⟩
+= (λnfz.n(λgx.g(gx))fz) (λxy.x(xy))
+⇒ (λfz. (λxy.x(xy)) (λgx.g(gx)) fz)
+⇒ (λfz. (λy.(λgx.g(gx)) ((λgx.g(gx)) y)) f z)
+⇒ (λfz. (λgx.g(gx)) ((λgx.g(gx)) f) z)
+⇒ (λfz. (λgx.g(gx)) (λx.f(fx)) z)
+⇒ (λfz. (λx. (λx.f(fx)) ((λx.f(fx))x)) z)
+⇒ (λfz. (λx.f(fx)) ((λx.f(fx))z))
+⇒ (λfz. (λx.f(fx)) (f(fz)))
+⇒ (λfz. f(f(f(fz))))
+= ⟨4⟩
+#+end_src
+
+** Teilaufgabe b
+⟨pow⟩⟨n⟩ = ⟨f(n)⟩
+f(n) = 2ⁿ
+
+** Teilaufgabe c
+⟨pow'⟩⟨n⟩⟨k⟩ = ⟨g(n,k)⟩
+g(n,k) = kⁿ
+#+begin_src elisp
+⟨pow'⟩ = (λnkxy. nkxy) = (λnk.(λxy.nkxy))
+#+end_src
+
+* Lösungen zu Aufgabe 3 (AGS 12.4.32)
+** Teilaufgabe a
+#+begin_src elisp
+(λfx.ffx)(λy.x)z
+   ----- ------
+  GV={x} FV={x}
+
+⇒_α (λfx₁.ffx₁)(λy.x)z
+
+⇒_β (λx₁.(λy.x)(λy.x)x₁)z
+         -------------- -
+         GV={y}         FV={z}
+
+⇒_β (λy.x)(λy.x)z
+        - ------
+     GV=∅ FV={x}
+⇒_β xz
+#+end_src
+
+** Teilaufgabe b
+#+begin_src elisp
+⟨Y⟩⟨F⟩
+= (λh.(λy.h(yy))(λy.h(yy)))⟨F⟩
+⇒ ((λy.⟨F⟩(yy))(λy.⟨F⟩(yy))) =: ⟨YF⟩
+⇒ ⟨F⟩((λy.⟨F⟩(yy))(λy.⟨F⟩(yy)))
+= ⟨F⟩⟨YF⟩
+
+⟨Y⟩⟨F⟩⟨6⟩⟨5⟩⟨3⟩
+⇒* ⟨F⟩⟨YF⟩⟨6⟩⟨5⟩⟨3⟩
+⇒* ⟨ite⟩ (⟨iszero⟩(⟨sub⟩⟨6⟩⟨5⟩))
+         (…)
+         (⟨succ⟩ (⟨YF⟩(⟨pred⟩⟨6⟩)(⟨succ⟩⟨5⟩)(⟨mult⟩⟨2⟩⟨3⟩)))
+⇒* ⟨succ⟩ (⟨YF⟩⟨5⟩⟨6⟩⟨6⟩)
+⇒* ⟨succ⟩ (⟨F⟩⟨YF⟩⟨5⟩⟨6⟩⟨6⟩)
+⇒* ⟨succ⟩ (⟨ite⟩ (⟨iszero⟩(⟨sub⟩⟨5⟩⟨6⟩))
+                 (⟨add⟩⟨6⟩⟨6⟩)
+                 (…)
+          )
+⇒* ⟨succ⟩ ⟨12⟩
+⇒* ⟨13⟩
+#+end_src
+
+** Teilaufgabe c
+#+begin_src elisp
+⟨G⟩ = (λgxy. ⟨ite⟩ (⟨iszero⟩x)
+                   (⟨mult⟩⟨2⟩(⟨succ⟩y))
+                   (⟨ite⟩ (⟨iszero⟩y)
+                          (⟨mult⟩⟨2⟩(⟨succ⟩x))
+                          (⟨add⟩⟨4⟩(g(⟨pred⟩x)(⟨pred⟩y)))
+                   )
+      )
+#+end_src
+
