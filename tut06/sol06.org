@@ -1,0 +1,93 @@
+#+title: Lösungen zum 6. Übungsblatt
+#+date: 2019-05-15
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösung zu Aufgabe 1 (AGS 12.3.19)
+*Induktionsbasis*
+Sei a ein beliebiger Typ und x :: a.
+#+begin_src haskell
+reverse (yield (Leaf x))
+= reverse [x]                  (Z9)
+= [x]                          (E1)
+= yield (Leaf x)               (Z9)
+= yield (mirror (Leaf x))      (Z5)
+#+end_src
+
+*Induktionsschritt*
+Sei a ein beliebiger Typ und seien s, t :: BinTree a, sodass A(s) ∧ A(t) gilt.
+Sei weiterhin x :: a.
+#+begin_src haskell
+reverse (yield (Branch x s t))
+= reverse (yield s ++ yield t)              (Z8)
+= reverse (yield t) ++ reverse (yield s)    (E2)
+= yield (mirror t) ++ yield (mirror s)      (IH)
+= yield (Branch x (mirror t) (mirror s))    (Z8)
+= yield (mirror (Branch x s t))             (Z4)
+#+end_src
+
+* Lösung zu Aufgabe 2 (AGS 12.3.13)
+*Induktionsbasis*
+Sei x, i :: Int.
+#+begin_src haskell
+add (neg i (Leaf x))
+= add (Leaf (x * i))                     (Z12)
+= x * i                                  (Z4)
+= i * x
+= i * sub (Leaf x)                       (Z8)
+#+end_src
+
+*Induktionsschritt*
+Sei s, t :: IntTree, sodass für jedes j, k :: Int gilt:
+  add (neg j s) = j * sub s
+  add (neg k t) = k * sub t
+Sei weiterhin i :: Int.
+#+begin_src haskell
+add (neg i (Branch s t))
+= add (Branch (neg i s) (neg (-i) t))    (Z13)
+= add (neg i s) + add (neg (-i) t)       (Z5)
+= i * sub s + (-i) * sub t               (IH)
+= i * (sub s - sub t)
+= i * sub (Branch s t)                   (Z9) 
+#+end_src
+
+* Lösungen zu Aufgabe 3 (AGS 12.4.1)
+** Teilaufgabe a
+| t                            | FV(t) | GV(t)   |
+|------------------------------+-------+---------|
+| (λx.xy)                      | {y}   | {x}     |
+| (λx.(λy.z(λz.z(λx.y))))      | {z}   | {x,y,z} |
+| (λx.(λy.xz(yz)))(λx.y(λy.y)) | {y,z} | {x,y}   |
+
+** Teilaufgabe b
+#+begin_src elisp
+(λx.(λy.xz(yz))) (λx.y(λy.y))
+    -----------  ------------
+    GV={y}       FV={y}
+
+⇒ₐ (λx.(λy₁.xz(y₁z))) (λx.y(λy.y))
+
+⇒ᵦ (λy₁.(λx.y(λy.y))z(y₁z))
+           ------- --
+           GV={y}  FV={z}
+
+⇒ᵦ (λy₁.y(λy.y)(y₁z))
+
+(λx.(λy.(λz.z))) x (+y1)
+    -----------  -
+    GV={y,z}     FV={x}
+
+⇒ᵦ (λy.(λz.z)) (+y1)
+       -----   ----
+       GV={z}  FV={y}
+
+⇒ᵦ (λz.z)
+
+
+(λx.(λy.x(λz.yz))) (((λx.(λy.y))8) (λx.(λy.y)x))
+
+(λh.(λx.h(xx))(λx.h(xx))) ((λx.x)(+15))
+
+(λf.(λa.(λb.fab))) (λx.(λy.x))
+#+end_src
+
