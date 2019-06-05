@@ -1,0 +1,105 @@
+#+title: Lösungen zum 8. Übungsblatt
+#+date: 2019-05-29
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösungen zu Aufgabe 1 (AGS 12.4.30)
+** Teilaufgabe a
+#+begin_src elisp
+⟨G⟩ = (λgmn. ⟨ite⟩ (⟨iszero⟩n)
+                   m
+                   (⟨ite⟩ (⟨iszero⟩(⟨pred⟩n))
+                          (⟨succ⟩m)
+                          (⟨add⟩ (gm(⟨pred⟩(⟨pred⟩n)))
+                                 (gm(⟨pred⟩n))
+                          )
+                   )
+      )
+#+end_src
+
+** Teilaufgabe b
+#+begin_src elisp
+⟨Y⟩⟨F⟩
+= (λh.(λu.h(uu))(λu.h(uu))) ⟨F⟩
+⇒ ((λu.⟨F⟩(uu))(λu.⟨F⟩(uu))) =: ⟨YF⟩
+⇒ ⟨F⟩⟨YF⟩
+
+⟨Y⟩⟨F⟩⟨2⟩⟨1⟩
+⇒* ⟨F⟩⟨YF⟩⟨2⟩⟨1⟩
+⇒* ⟨ite⟩ (⟨iszero⟩⟨1⟩) (…) (⟨mult⟩⟨2⟩(⟨YF⟩⟨2⟩(⟨pred⟩⟨1⟩)))
+         -------------                       -----------
+         ⇒* ⟨false⟩                          ⇒* ⟨0⟩
+⇒* ⟨mult⟩ ⟨2⟩ (⟨YF⟩⟨2⟩⟨0⟩)
+⇒* ⟨mult⟩ ⟨2⟩ (⟨F⟩⟨YF⟩⟨2⟩⟨0⟩)
+⇒* ⟨mult⟩ ⟨2⟩ (⟨ite⟩ (⟨iszero⟩⟨0⟩) ⟨1⟩ (…))
+                     -------------
+                     ⇒* ⟨true⟩
+⇒* ⟨mult⟩ ⟨2⟩ ⟨1⟩
+⇒* ⟨2⟩
+#+end_src
+
+* Lösungen zu Aufgabe 2 (AGS 12.4.20)
+** Teilaufgabe a
+#+begin_src elisp
+⟨G⟩ = (λgxy. ⟨ite⟩ (⟨iszero⟩y)
+                   (⟨mult⟩xx)
+                   (g(⟨mult⟩⟨2⟩x)(⟨pred⟩y))
+      )
+#+end_src
+
+** Teilaufgabe b
+#+begin_src elisp
+⟨Y⟩⟨G⟩
+= (λh.(λu.h(uu))(λu.h(uu))) ⟨G⟩
+⇒ ((λu.⟨G⟩(uu))(λu.⟨G⟩(uu))) =: ⟨YG⟩
+⇒ ⟨G⟩⟨YG⟩
+
+⟨Y⟩⟨G⟩⟨1⟩⟨3⟩
+⇒* ⟨G⟩⟨YG⟩⟨1⟩⟨3⟩
+⇒* ⟨ite⟩ (⟨iszero⟩⟨3⟩) (…) (⟨YG⟩(⟨mult⟩⟨2⟩⟨1⟩)(⟨pred⟩⟨3⟩))
+         -------------           ------------  ---------
+         ⇒* ⟨false⟩              ⇒* ⟨2⟩        ⇒*⟨2⟩
+⇒* ⟨YG⟩ ⟨2⟩ ⟨2⟩
+⇒* ⟨G⟩ ⟨YG⟩ ⟨2⟩ ⟨2⟩
+⇒* ⟨ite⟩ (⟨iszero⟩⟨2⟩) (…) (⟨YG⟩(⟨mult⟩⟨2⟩⟨2⟩)(⟨pred⟩⟨2⟩))
+         -------------           ------------  ---------
+         ⇒* ⟨false⟩              ⇒* ⟨4⟩        ⇒*⟨1⟩
+⇒* ⟨YG⟩ ⟨4⟩ ⟨1⟩
+⇒* ⟨G⟩ ⟨YG⟩ ⟨4⟩ ⟨1⟩
+⇒* ⟨ite⟩ (⟨iszero⟩⟨1⟩) (…) (⟨YG⟩(⟨mult⟩⟨2⟩⟨4⟩)(⟨pred⟩⟨1⟩))
+         -------------           ------------  ---------
+         ⇒* ⟨false⟩              ⇒* ⟨8⟩        ⇒*⟨0⟩
+⇒* ⟨YG⟩ ⟨8⟩ ⟨0⟩
+⇒* ⟨G⟩ ⟨YG⟩ ⟨8⟩ ⟨0⟩
+⇒* ⟨ite⟩ (⟨iszero⟩⟨0⟩) (⟨mult⟩⟨8⟩⟨8⟩) (…)
+         -------------  ------------
+         ⇒* ⟨true⟩      ⇒* ⟨64⟩
+⇒* ⟨64⟩
+#+end_src
+
+* Lösungen zu Aufgabe 3 (AGS 13.6)
+** Teilaufgaben a und b
+#+INCLUDE: "sol08-3.pl" src prolog
+
+** Teilaufgabe c
+#+begin_src prolog
+       ?- path(4,X).
+{X=4}  ?-.                              % p1
+
+       ?- path(4,X).
+       ?- path(V,X), edge(4,V).         % p2
+{V=3}  ?- path(3,X).                    % e5
+{X=3}  ?-.                              % p1
+
+       ?- path(4,X).
+       ?- path(V,X), edge(4,V).         % p2
+{V=3}  ?- path(3,X).                    % e5
+       ?- path(V1,X), edge(3,V1).       % p2
+{V1=2} ?- path(2,X).                    % e4
+{X=2}  ?-.                              % p1
+#+end_src
+
+X ∈ {2,3,4}
+
+
+
