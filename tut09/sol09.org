@@ -1,0 +1,89 @@
+#+title: Lösungen zum 9. Übungsblatt
+#+date: 2019-06-05
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösungen zu Aufgabe 1 (AGS 13.8)
+** Teilaufgabe a
+#+begin_src prolog
+lt(0, s(Y)) :- nat(Y).                                     % l1
+lt(s(X), s(Y)) :- lt(X, Y).                                % l2
+
+div(0, M, 0) :- lt(0, M).                                  % d1
+div(N, M, 0) :- lt(N, M).                                  % d2
+div(N, M, s(X)) :- div(Z, M, X), sum(M, Z, N), lt(0, M).   % d3
+#+end_src
+
+** Teilaufgabe b
+#+begin_src prolog
+        ?- div(⟨3⟩, ⟨2⟩, ⟨1⟩).
+        ?- div(Z, ⟨2⟩, X), sum(⟨2⟩, Z, ⟨3⟩), lt(0, ⟨2⟩).           % d3
+        ?- div(Z, ⟨2⟩, X), sum(⟨2⟩, Z, ⟨3⟩), nat(⟨1⟩).             % l1
+        ?- div(Z, ⟨2⟩, X), sum(⟨2⟩, Z, ⟨3⟩), nat(0).               % 2
+        ?- div(Z, ⟨2⟩, X), sum(⟨2⟩, Z, ⟨3⟩).                       % 1
+        ?-* div(Z, ⟨2⟩, X), sum(0, Z, ⟨1⟩).                        % 4
+{Z=⟨1⟩} ?- div(⟨1⟩, ⟨2⟩, X), nat(⟨1⟩).                             % 3
+        ?- div(⟨1⟩, ⟨2⟩, X), nat(0).                               % 2
+        ?- div(⟨1⟩, ⟨2⟩, X).                                       % 1
+{X=0}   ?- lt(⟨1⟩, ⟨2⟩).                                           % d2
+        ?- lt(0, ⟨1⟩).                                             % l2
+        ?- nat(0).                                                 % l1
+        ?-.                                                        % 1
+#+end_src
+
+* Lösungen zu Aufgabe 2 (AGS 13.13)
+#+begin_src prolog
+eval(X, X) :- nat(X).
+eval(plus(X, Y), E) :- eval(X, XE), eval(Y, YE), sum(XE, YE, E).
+eval(minus(X, Y), E) :- eval(X, XE), eval(Y, YE), sum(YE, E, XE).
+#+end_src
+
+* Lösungen zu Aufgabe 3 (AGS 13.6)
+** Teilaufgabe a
+#+begin_src prolog
+                     ?- subt(s(X, Y), s(s(a, b), s(b, a))).
+{X=s(a,b), Y=s(b,a)} ?-.                                     % 1
+
+           ?- subt(s(X, Y), s(s(a, b), s(b, a))).
+           ?- subt(s(X, Y), s(a, b)).                        % 3
+{X=a, Y=b} ?-.                                               % 1
+
+           ?- subt(s(X, Y), s(s(a, b), s(b, a))).
+           ?- subt(s(X, Y), s(b, a)).                        % 2
+{X=b, Y=a} ?-.                                               % 1
+#+end_src
+
+(X, Y) ∈ {(s(a,b), s(b,a)), (a, b), (b, a)}
+
+** Teilaufgabe b
+#+begin_src prolog
+             ?- subt(s(a, a), X).
+{X=s(a,a)}   ?-.                                            % 1
+
+             ?- subt(s(a, a), X).
+{X=s(_, T2)} ?- subt(s(a, a), T2).                          % 2
+{T2=s(a,a)}  ?-                        .                    % 1
+#+end_src
+
+X ∈ {s(a,a), s(a, s(a,a)), s(s(a,a), s(a,a))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
