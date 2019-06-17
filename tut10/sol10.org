@@ -1,0 +1,139 @@
+#+title: Lösungen zum 10. Übungsblatt
+#+date: 2019-06-17
+#+email: tobias.denkinger@tu-dresden.de
+#+options: toc:nil
+
+* Lösungen zu Aufgabe 1 (AGS 14.1)
+** Teilaufgabe a
+| id      | a        | b        | max      |
+|---------+----------+----------+----------|
+| tab(id) | (var, 1) | (var, 2) | (var, 3) |
+
+#+begin_src
+trans(Max)
+= blocktrans({ int a, b, max; … return 0;})
+= stseqtrans(scanf(…); …; printf(…);, tab, 1)
+= sttrans(scanf("%i", &a);, tab, 1.1)
+  sttrans(scanf("%i", &b);, tab, 1.2)
+  sttrans(if (a > b) max = a; else max = b;, tab, 1.3)
+  sttrans(printf("%d", max);, tab, 1.4)
+= 1.1:   READ 1;
+  1.2:   READ 2;
+  1.3:   boolexptrans(a > b, tab)
+         JMC 1.3.1;
+         sttrans(max = a, tab, 1.3.2)
+         JMP 1.3.3;
+  1.3.1: sttrans(max = b;, tab, 1.3.4)
+  1.3.3:
+  1.4:   WRITE 3;
+= 1.1:   READ 1;
+  1.2:   READ 2;
+  1.3:   LOAD 1; LOAD 2; GT;
+         JMC 1.3.1;
+  1.3.2: simpleexptrans(a) STORE 3;
+         JMP 1.3.3;
+  1.3.1:
+  1.3.4: simpleexptrans(b) STORE 3;
+  1.3.3:
+  1.4:   WRITE 3;
+= 1.1:   READ 1;
+  1.2:   READ 2;
+  1.3:   LOAD 1; LOAD 2; GT;
+         JMC 1.3.1;
+  1.3.2: LOAD 1; STORE 3;
+         JMP 1.3.3;
+  1.3.1:
+  1.3.4: LOAD 2; STORE 3;
+  1.3.3:
+  1.4:   WRITE 3;
+#+end_src
+
+** Teilaufgabe b
+
+#+begin_src
+1: READ 1;   5: GT;        9: JMP 12;
+2: READ 2;   6: JMC 10;   10: LOAD 2;
+3: LOAD 1;   7: LOAD 1;   11: STORE 3;
+4: LOAD 2;   8: STORE 3;  12: WRITE 3
+#+end_src
+|  BZ |  DK | HS              | Inp | Out | (optional) |
+| <r> | <r> | <l>             | <r> | <l> | <l>        |
+|-----+-----+-----------------+-----+-----+------------|
+|   1 |   ε | []              | 5:7 | ε   | READ 1     |
+|   2 |     | [1/5]           |   7 |     | READ 2     |
+|   3 |     | [1/5, 2/7]      |   ε |     | LOAD 1     |
+|   4 |   5 |                 |     |     | LOAD 2     |
+|   5 | 7:5 |                 |     |     | GT         |
+|   6 |   0 |                 |     |     | JMC 10     |
+|  10 |   ε |                 |     |     | LOAD 2     |
+|  11 |   7 |                 |     |     | STORE 3    |
+|  12 |   ε | [1/5, 2/7, 3/7] |     |     | WRITE 3    |
+|  13 |     |                 |     | 7   |            |
+
+ * P⟦Max₀⟧(5:7) = 7
+
+* Lösungen zu Aufgabe 2 (AGS 14.10)
+** Teilaufgabe a
+| id      | x        | y        | a        |
+|---------+----------+----------+----------|
+| tab(id) | (var, 1) | (var, 2) | (var, 3) |
+
+#+begin_src
+ 1: READ 2;
+ 2: READ 3;
+ 3: LIT 0;
+ 4: STORE 1;
+ 5: LOAD 1;
+ 6: LOAD 3;
+ 7: LT;
+ 8: JMC 18;
+ 9: LOAD 1;
+10: LIT 1;
+11: ADD;
+12: STORE 1;
+13: LOAD 2;
+14: LOAD 2;
+15: MUL;
+16: STORE 2;
+17: JMP 5;
+18: WRITE 2;
+#+end_src
+
+** Teilaufgabe b
+|  BZ |    DK | HS         | Inp | Out |         |
+| <r> |   <r> | <l>        | <r> | <l> | <l>     |
+|-----+-------+------------+-----+-----+---------|
+|   1 |     ε | []         | 0:1 | ε   | READ 1  |
+|   2 |       | [1/0]      |   1 |     | READ 2  |
+|   3 |       | [1/0, 2/1] |   ε |     | LOAD 1  |
+|   4 |     0 |            |     |     | LOAD 2  |
+|   5 |   1:0 |            |     |     | LIT 0   |
+|   6 | 0:1:0 |            |     |     | SUB     |
+|   7 |   1:0 |            |     |     | JMC 9   |
+|   8 |     0 |            |     |     | JMP 5   |
+|   5 |       |            |     |     | LIT 0   |
+|   6 |   0:0 |            |     |     | SUB     |
+|   7 |     0 |            |     |     | JMC 9   |
+|   9 |     ε |            |     |     | WRITE 2 |
+|  10 |       |            |     | 1   |         |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
