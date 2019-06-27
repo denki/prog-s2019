@@ -1,6 +1,8 @@
 # prog-s2019
 Materialien zu Übung Programmierung, SoSe 2019, TU Dresden, Mittwoch 4. DS, APB/E006
 
+**Die Übungen 12 und 13 werden von Richard Mörbitz gehalten.  Bitte richtet eventuelle Fragen an ihn.**
+
 ## Benutzung (hs-Dateien)
 * eine Datei mit ``ghci`` laden: ``ghci tut01/Sol01.hs``
 * eine Funktion der Haskelldatei ausführen: z.B. ``fac 5``
@@ -17,6 +19,7 @@ Materialien zu Übung Programmierung, SoSe 2019, TU Dresden, Mittwoch 4. DS, APB
 * [Übung 8](http://htmlpreview.github.io/?https://github.com/denki/prog-s2019/blob/master/tut08/sol08.html)
 * [Übung 9](http://htmlpreview.github.io/?https://github.com/denki/prog-s2019/blob/master/tut09/sol09.html)
 * [Übung 10](http://htmlpreview.github.io/?https://github.com/denki/prog-s2019/blob/master/tut10/sol10.html)
+* [Übung 11](http://htmlpreview.github.io/?https://github.com/denki/prog-s2019/blob/master/tut11/sol11.html)
 
 ## Benutzung (pl-Dateien)
 * eine Datei mit ``swipl`` laden: ``swipl tut06/sol06-2.pl``
